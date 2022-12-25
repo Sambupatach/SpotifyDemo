@@ -31,7 +31,12 @@ class HomeViewModel(var app: Application) : AndroidViewModel(app) {
             Log.d(TAG,"got token:$accessToken")
             _accessTokenInitialized.emit((if(accessToken != null) true else false))
 
-
+            //TODO : DELETE
+            var releases = getNewReleasesUseCase(app, accessToken)
+            Log.d(TAG,"domain releases: ${releases?.size}")
+            if(releases?.size!! > 0){
+                Log.d(TAG,"first album: ${releases?.get(0)}")
+            }
         }
     }
 
