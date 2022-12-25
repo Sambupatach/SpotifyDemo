@@ -42,4 +42,8 @@ data class Album (
     @SerializedName("uri")
     var uri : String? = null
 
-)
+) {
+    override fun toString(): String {
+        return "Album(album_type=$album_type, artists=$artists, available_markets=$available_markets, external_urls=$external_urls, href=$href, id=$id, images=$images, name=$name, release_date=$release_date, release_date_precision=$release_date_precision, total_tracks=$total_tracks, type=$type, uri=$uri)"
+    }
+}

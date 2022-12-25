@@ -12,6 +12,6 @@ class GetAccessTokenUseCase constructor(
     suspend operator fun invoke(application : Application) : String{
         Log.d(TAG,"getToken")
         var spotifyAccountService = SpotifyAccounts(application.applicationContext)
-        return spotifyAccountService.getAccessToken()
+        return spotifyAccountService.getAccessToken(application.applicationContext)
     }
 }

@@ -11,4 +11,8 @@ data class Image (
 
     @SerializedName("width")
     var width : Int? = null
-)
+) {
+    override fun toString(): String {
+        return "Image(height=$height, url=$url, width=$width)"
+    }
+}

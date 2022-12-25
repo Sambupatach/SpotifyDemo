@@ -1,10 +1,8 @@
 package com.lowes.demoapp.network.service
 
 import com.lowes.demoapp.network.model.AccessTokenDto
-import retrofit2.http.Field
-import retrofit2.http.FormUrlEncoded
-import retrofit2.http.Header
-import retrofit2.http.POST
+import com.lowes.demoapp.network.model.NewReleasesDto
+import retrofit2.http.*
 
 interface SpotifyNetworkService {
 
@@ -14,4 +12,9 @@ interface SpotifyNetworkService {
         @Field("grant_type") grantType :String,
         @Header("Authorization") token: String
     ) : AccessTokenDto
+
+    @GET("browse/new-releases")
+    suspend fun getNewReleases(
+        @Header("Content-Type") contentType: String
+    ) : NewReleasesDto
 }

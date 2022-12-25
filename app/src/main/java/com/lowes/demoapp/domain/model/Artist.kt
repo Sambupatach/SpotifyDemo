@@ -20,4 +20,8 @@ data class Artist (
 
     @SerializedName("uri")
     var uri :String? = null
-)
+) {
+    override fun toString(): String {
+        return "Artist(external_urls=$external_urls, href=$href, id=$id, name=$name, type=$type, uri=$uri)"
+    }
+}
