@@ -40,7 +40,7 @@ class HomeActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         Log.d(TAG,"onResume")
-        viewModel.doInit()
+        //viewModel.doInit()
     }
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment_content_home)

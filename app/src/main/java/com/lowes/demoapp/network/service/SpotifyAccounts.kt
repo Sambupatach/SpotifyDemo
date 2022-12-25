@@ -70,9 +70,10 @@ class SpotifyAccounts(var context : Context) {
             .addInterceptor(interceptor)
             .build()
     }
-    suspend public fun getAccessToken(){
+    suspend public fun getAccessToken() : String{
         var acccessTokenDto = mAccountService.getAccessToken("client_credentials",CLIENT_SECRET)
         Log.d(TAG, "Access Token: "+acccessTokenDto?.access_token)
+
         acccessTokenDto.let {
             it.access_token?.let {
                 mAccessToken = it
@@ -82,5 +83,7 @@ class SpotifyAccounts(var context : Context) {
             }
 
         }
+        Log.d(TAG,"return $mAccessToken")
+        return mAccessToken
     }
 }
