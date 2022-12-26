@@ -61,21 +61,7 @@ class FirstFragment : Fragment() {
         binding.search.isEnabled = false
         binding.newSearch.isEnabled = false
         initRecyclerView()
-        initQueryListener()
         observeViewModel()
-    }
-    private fun initQueryListener(){
-        binding.queryinputtext.setOnKeyListener { v, keyCode, event ->
-            Log.d(TAG, "OnKeyListener")
-            if (binding.queryinputtext.text!!.isNotEmpty()) {
-                Log.d(TAG, "have query")
-                binding.search.text = getString(R.string.search_releases)
-            } else {
-                Log.d(TAG, "no query")
-                binding.search.text = getString(R.string.new_releases)
-            }
-            false
-        }
     }
     private fun initRecyclerView(){
         Log.d(TAG,"initRecyclerView")

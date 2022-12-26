@@ -73,14 +73,19 @@ class SpotifyAccounts(var context : Context) {
 
 
     suspend public fun getAccessToken(context : Context) : String?{
-        accountService ?: getAccountService( context.mainExecutor)?.let { accountService = it }
-        var acccessTokenDto = accountService!!.getAccessToken("client_credentials",CLIENT_SECRET)
-        Log.d(TAG, "Access Token: "+acccessTokenDto?.access_token)
         var accessToken : String? = null
-        acccessTokenDto.let {
-            it.access_token?.let {
-                accessToken = it
+        try {
+            accountService ?: getAccountService(context.mainExecutor)?.let { accountService = it }
+            var acccessTokenDto =
+                accountService!!.getAccessToken("client_credentials", CLIENT_SECRET)
+            Log.d(TAG, "Access Token: " + acccessTokenDto?.access_token)
+            acccessTokenDto.let {
+                it.access_token?.let {
+                    accessToken = it
+                }
             }
+        }catch (exception : Exception){
+            Log.e(TAG,"Exception with getAccessToken : ",exception)
         }
         Log.d(TAG,"return $accessToken")
         return accessToken
@@ -88,21 +93,33 @@ class SpotifyAccounts(var context : Context) {
 
     suspend fun getNewReleases(accessToken : String, context : Context) : List<Album>?{
         Log.d(TAG,"getNewReleases token:")
-        apiService ?: getApiService(accessToken, context.mainExecutor)?.let {
-            apiService = it
+        var finalAlbums : List<Album>? = null
+        try {
+            apiService ?: getApiService(accessToken, context.mainExecutor)?.let {
+                apiService = it
+            }
+            var releases = apiService!!.getNewReleases("application/json")
+            Log.d(TAG, "releses: $releases")
+            finalAlbums = releases?.albums?.items?.run { AlbumDtoMapper().toDomainList(this) }
+        }catch (exception : Exception){
+            Log.e(TAG,"Exception with newReleases : ",exception)
         }
-        var releases = apiService!!.getNewReleases("application/json")
-        Log.d(TAG,"releses: $releases")
-        return releases?.albums?.items?.run { AlbumDtoMapper().toDomainList(this) }
+        return finalAlbums
     }
 
     suspend fun doSearch(query : String, accessToken : String, context : Context): List<Album>? {
         Log.d(TAG, "doSearch query:$query")
-        apiService ?: getApiService(accessToken, context.mainExecutor)?.let {
-            apiService = it
+        var finalAlbums : List<Album>? = null
+        try {
+            apiService ?: getApiService(accessToken, context.mainExecutor)?.let {
+                apiService = it
+            }
+            var albums = apiService!!.search("application/json", query, "album")
+            Log.d(TAG, "albums:$albums")
+            finalAlbums = albums?.albums?.items?.run { AlbumDtoMapper().toDomainList(this) }
+        }catch (exception : Exception){
+            Log.e(TAG,"Exception while searching : ",exception)
         }
-        var albums = apiService!!.search("application/json",query, "album")
-        Log.d(TAG,"albums:$albums")
-        return albums?.albums?.items?.run { AlbumDtoMapper().toDomainList(this) }
+        return finalAlbums
     }
 }

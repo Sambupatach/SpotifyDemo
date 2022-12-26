@@ -56,7 +56,7 @@ class HomeViewModel(var app: Application) : AndroidViewModel(app) {
         Log.d(TAG,"doSearch: accessToken present: ${accessToken != null} query: $query")
         viewModelScope.launch {
             var releases = accessToken?.let { doSearchUseCase( app, it, query) }
-            if(releases?.size!! > 0){
+            if(releases != null && releases?.size!! > 0){
                 Log.d(TAG,"first album: ${releases?.get(0)}")
                 _newReleases.emit(releases)
             }else{
