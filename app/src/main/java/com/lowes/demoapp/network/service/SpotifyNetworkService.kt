@@ -17,4 +17,11 @@ interface SpotifyNetworkService {
     suspend fun getNewReleases(
         @Header("Content-Type") contentType: String
     ) : NewReleasesDto
+
+    @GET("search")
+    suspend fun search(
+        @Header("Content-Type") contentType: String,
+        @Query("q") query: String,
+        @Query("type") type: String
+    ) : NewReleasesDto
 }

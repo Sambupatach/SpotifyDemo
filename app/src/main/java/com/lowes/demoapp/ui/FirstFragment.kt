@@ -53,6 +53,7 @@ class FirstFragment : Fragment() {
         binding.search.setOnClickListener {
             var query = binding.queryinputtext.text
             Log.d(TAG,"query : $query")
+            viewModel.doSearch(query.toString())
         }
         binding.newSearch.setOnClickListener {
             viewModel.getNewReleases()

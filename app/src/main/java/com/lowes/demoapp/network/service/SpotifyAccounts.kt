@@ -18,9 +18,8 @@ class SpotifyAccounts(var context : Context) {
     val SPOTIFY_WEB_API_ENDPOINT = "https://api.spotify.com/v1/"
     val CLIENT_SECRET = "Basic NzZhNDk1NGJmNmM4NGE0NThlOTMzN2VhYTI5MjVlOTI6MzFlNDJhNGQ3Mjk1NDM1NmI1NzI3NjRmOWM3N2Y4NDg="
 
-    private lateinit var accountService : SpotifyNetworkService
-    private lateinit var apiService : SpotifyNetworkService
-    private lateinit var accessToken : String
+    private var accountService : SpotifyNetworkService? = null
+    private var apiService : SpotifyNetworkService? = null
     private val loggingClient by lazy {
         getLoggingClient(HttpLoggingInterceptor.Level.BODY)
     }
@@ -38,6 +37,7 @@ class SpotifyAccounts(var context : Context) {
     }
     suspend private fun getApiService(accessToken : String, callbackExecutor: Executor): SpotifyNetworkService? {
         Log.d(TAG,"init ApiService")
+
         var tokenCheckingClient = getTokenCheckClient(accessToken, HttpLoggingInterceptor.Level.BODY)
         val retrofit: Retrofit = Retrofit.Builder()
             .client(tokenCheckingClient)
@@ -72,11 +72,11 @@ class SpotifyAccounts(var context : Context) {
     }
 
 
-    suspend public fun getAccessToken(context : Context) : String{
-        getAccountService( context.mainExecutor)?.let { accountService = it }
-        var acccessTokenDto = accountService.getAccessToken("client_credentials",CLIENT_SECRET)
+    suspend public fun getAccessToken(context : Context) : String?{
+        accountService ?: getAccountService( context.mainExecutor)?.let { accountService = it }
+        var acccessTokenDto = accountService!!.getAccessToken("client_credentials",CLIENT_SECRET)
         Log.d(TAG, "Access Token: "+acccessTokenDto?.access_token)
-
+        var accessToken : String? = null
         acccessTokenDto.let {
             it.access_token?.let {
                 accessToken = it
@@ -88,11 +88,21 @@ class SpotifyAccounts(var context : Context) {
 
     suspend fun getNewReleases(accessToken : String, context : Context) : List<Album>?{
         Log.d(TAG,"getNewReleases token:")
-        getApiService(accessToken, context.mainExecutor)?.let {
+        apiService ?: getApiService(accessToken, context.mainExecutor)?.let {
             apiService = it
         }
-        var releases = apiService.getNewReleases("application/json")
+        var releases = apiService!!.getNewReleases("application/json")
         Log.d(TAG,"releses: $releases")
         return releases?.albums?.items?.run { AlbumDtoMapper().toDomainList(this) }
+    }
+
+    suspend fun doSearch(query : String, accessToken : String, context : Context): List<Album>? {
+        Log.d(TAG, "doSearch query:$query")
+        apiService ?: getApiService(accessToken, context.mainExecutor)?.let {
+            apiService = it
+        }
+        var albums = apiService!!.search("application/json",query, "album")
+        Log.d(TAG,"albums:$albums")
+        return albums?.albums?.items?.run { AlbumDtoMapper().toDomainList(this) }
     }
 }
