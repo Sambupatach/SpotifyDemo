@@ -25,8 +25,10 @@ class SpotifyAccounts(var context : Context) {
         getLoggingClient(HttpLoggingInterceptor.Level.BODY)
     }
 
-
-    private fun getAccountService(callbackExecutor: Executor): SpotifyNetworkService? {
+    /*
+     * Spotify service for Account end point - doesn't need token interceptor
+     */
+    suspend private fun getAccountService(callbackExecutor: Executor): SpotifyNetworkService? {
         Log.d(TAG,"init AccountService")
         val retrofit: Retrofit = Retrofit.Builder()
             .client(loggingClient)
@@ -36,6 +38,10 @@ class SpotifyAccounts(var context : Context) {
             .build()
         return retrofit.create(SpotifyNetworkService::class.java)
     }
+
+    /*
+     * Spotify service for api end point - with token interceptor
+     */
     suspend private fun getApiService(accessToken : String, callbackExecutor: Executor): SpotifyNetworkService? {
         Log.d(TAG,"init ApiService")
 
@@ -73,7 +79,7 @@ class SpotifyAccounts(var context : Context) {
     }
 
 
-    suspend public fun getAccessToken(context : Context) : String?{
+    suspend fun getAccessToken(context : Context) : String?{
         var accessToken : String? = null
         try {
             accountService ?: getAccountService(context.mainExecutor)?.let { accountService = it }

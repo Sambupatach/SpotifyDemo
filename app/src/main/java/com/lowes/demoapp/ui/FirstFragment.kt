@@ -16,7 +16,9 @@ import kotlinx.coroutines.flow.onEach
 
 private const val TAG = "FirstFragment"
 /**
- * A simple [Fragment] subclass as the default destination in the navigation.
+ * Screen with two features
+ *    -> get New Release albums
+ *    -> search albums for given query
  */
 class FirstFragment : Fragment() {
 

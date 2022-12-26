@@ -18,6 +18,9 @@ class SplashScreenActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         Log.d(TAG,"onResume")
+
+        // Branding opportunity
+
         Handler(Looper.getMainLooper()).postDelayed({
             Log.d(TAG,"Launch HomeActivity")
             startActivity(Intent(this, HomeActivity::class.java))
