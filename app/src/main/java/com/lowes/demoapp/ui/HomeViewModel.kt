@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.lowes.demoapp.domain.model.Album
 import com.lowes.demoapp.network.service.SpotifyAccounts
 import com.lowes.demoapp.usecases.GetAccessTokenUseCase
 import com.lowes.demoapp.usecases.GetNewReleasesUseCase
@@ -19,6 +20,9 @@ class HomeViewModel(var app: Application) : AndroidViewModel(app) {
 
     private val _accessTokenInitialized = MutableSharedFlow<Boolean>()
     val accessTokenInitialized: Flow<Boolean> = _accessTokenInitialized
+
+    private val _newReleases = MutableSharedFlow<List<Album>>()
+    val newReleases: Flow<List<Album>> = _newReleases
 
     private lateinit var accessToken : String
     init {
@@ -36,6 +40,7 @@ class HomeViewModel(var app: Application) : AndroidViewModel(app) {
             Log.d(TAG,"domain releases: ${releases?.size}")
             if(releases?.size!! > 0){
                 Log.d(TAG,"first album: ${releases?.get(0)}")
+                _newReleases.emit(releases)
             }
         }
     }

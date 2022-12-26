@@ -11,8 +11,10 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.lowes.demoapp.R
 import com.lowes.demoapp.databinding.FragmentFirstBinding
+import com.lowes.demoapp.domain.model.Album
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
@@ -28,7 +30,7 @@ class FirstFragment : Fragment() {
     // onDestroyView.
     private val binding get() = _binding!!
     private val viewModel: HomeViewModel by activityViewModels()
-
+    private lateinit var albumsAdapter : AlbumsRecyclerAdapter
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -50,9 +52,18 @@ class FirstFragment : Fragment() {
         binding.buttonFirst.setOnClickListener {
             findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
         }
+        initRecyclerView()
         observeViewModel()
     }
 
+    private fun initRecyclerView(){
+        Log.d(TAG,"initRecyclerView")
+        binding.recyclerView.apply{
+            layoutManager = LinearLayoutManager(this@FirstFragment.context)
+            albumsAdapter = AlbumsRecyclerAdapter(ArrayList<Album>())
+            adapter = albumsAdapter
+        }
+    }
     private fun observeViewModel() {
         Log.d(TAG,"observeViewModel")
         with(lifecycleScope) {
@@ -65,6 +76,12 @@ class FirstFragment : Fragment() {
                         Log.d(TAG,"token absent")
                 }
 
+            }.launchIn(this)
+
+            viewModel.newReleases.onEach { albums ->
+                Log.d(TAG,"got updated albums: size: ${albums.size}")
+                albumsAdapter.updateAlbums(albums)
+                albumsAdapter.notifyDataSetChanged()
             }.launchIn(this)
         }
     }
