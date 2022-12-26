@@ -2,6 +2,7 @@ package com.lowes.demoapp.ui
 
 import android.os.Bundle
 import android.util.Log
+import android.view.KeyEvent
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -50,12 +51,31 @@ class FirstFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         Log.d(TAG,"onViewCreated")
         binding.search.setOnClickListener {
-            findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
+            var query = binding.queryinputtext.text
+            Log.d(TAG,"query : $query")
         }
+        binding.newSearch.setOnClickListener {
+            viewModel.getNewReleases()
+        }
+        binding.search.isEnabled = false
+        binding.newSearch.isEnabled = false
         initRecyclerView()
+        initQueryListener()
         observeViewModel()
     }
-
+    private fun initQueryListener(){
+        binding.queryinputtext.setOnKeyListener { v, keyCode, event ->
+            Log.d(TAG, "OnKeyListener")
+            if (binding.queryinputtext.text!!.isNotEmpty()) {
+                Log.d(TAG, "have query")
+                binding.search.text = getString(R.string.search_releases)
+            } else {
+                Log.d(TAG, "no query")
+                binding.search.text = getString(R.string.new_releases)
+            }
+            false
+        }
+    }
     private fun initRecyclerView(){
         Log.d(TAG,"initRecyclerView")
         binding.recyclerView.apply{
@@ -70,10 +90,16 @@ class FirstFragment : Fragment() {
             viewModel.accessTokenInitialized.onEach { result ->
                 Log.d(TAG,"access token init result:$result")
                 when(result){
-                    true ->
-                        Log.d(TAG,"token present")
-                    false ->
-                        Log.d(TAG,"token absent")
+                    true -> {
+                        Log.d(TAG, "token present")
+                        binding.search.isEnabled = true
+                        binding.newSearch.isEnabled = true
+                    }
+                    false -> {
+                        Log.d(TAG, "token absent")
+                        binding.search.isEnabled = false
+                        binding.newSearch.isEnabled = false
+                    }
                 }
 
             }.launchIn(this)

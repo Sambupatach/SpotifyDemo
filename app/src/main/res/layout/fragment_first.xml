@@ -20,31 +20,46 @@
             android:layout_height="wrap_content"
             android:text="@string/query" />
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
 
-                <com.google.android.material.textfield.TextInputEditText
+                <EditText
                     android:id="@+id/queryinputtext"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/query_hint"
-                    android:text="@={binding.viewmodel}"/>
-            </com.google.android.material.textfield.TextInputLayout>
+                    android:hint="@string/query_hint"/>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:gravity="right"
+
             android:id="@+id/container2"
             >
-
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:layout_gravity="left"
+                android:orientation="horizontal">
+            <Button
+                android:id="@+id/new_search"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:text="@string/new_releases" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:layout_gravity="right"
+                android:gravity="right"
+                android:orientation="horizontal">
             <Button
                 android:id="@+id/search"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/new_releases" />
+                android:text="@string/search_albums" />
+            </LinearLayout>
         </LinearLayout>
 
 

@@ -31,17 +31,9 @@ class HomeViewModel(var app: Application) : AndroidViewModel(app) {
     public fun doInit(){
         Log.d(TAG,"doInit")
         viewModelScope.launch {
-            var accessToken = getAccessTokenUseCase(app)
+            accessToken = getAccessTokenUseCase(app)
             Log.d(TAG,"got token:$accessToken")
             _accessTokenInitialized.emit((if(accessToken != null) true else false))
-
-            //TODO : DELETE
-            var releases = getNewReleasesUseCase(app, accessToken)
-            Log.d(TAG,"domain releases: ${releases?.size}")
-            if(releases?.size!! > 0){
-                Log.d(TAG,"first album: ${releases?.get(0)}")
-                _newReleases.emit(releases)
-            }
         }
     }
 
@@ -49,6 +41,10 @@ class HomeViewModel(var app: Application) : AndroidViewModel(app) {
         Log.d(TAG, "getNewReleases")
         viewModelScope.launch {
             var releases = getNewReleasesUseCase(app, accessToken)
+            if(releases?.size!! > 0){
+                Log.d(TAG,"first album: ${releases?.get(0)}")
+                _newReleases.emit(releases)
+            }
         }
     }
 }
