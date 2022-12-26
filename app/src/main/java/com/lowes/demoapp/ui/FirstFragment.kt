@@ -2,18 +2,13 @@ package com.lowes.demoapp.ui
 
 import android.os.Bundle
 import android.util.Log
-import android.view.KeyEvent
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.viewModels
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.lowes.demoapp.R
 import com.lowes.demoapp.databinding.FragmentFirstBinding
 import com.lowes.demoapp.domain.model.Album
 import kotlinx.coroutines.flow.launchIn
@@ -45,7 +40,6 @@ class FirstFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         Log.d(TAG,"onResume")
-        viewModel.doInit()
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -53,7 +47,10 @@ class FirstFragment : Fragment() {
         binding.search.setOnClickListener {
             var query = binding.queryinputtext.text
             Log.d(TAG,"query : $query")
-            viewModel.doSearch(query.toString())
+            if(query.isNotEmpty())
+                viewModel.doSearch(query.toString())
+            else
+                Log.e(TAG,"Empty query")
         }
         binding.newSearch.setOnClickListener {
             viewModel.getNewReleases()
@@ -86,6 +83,7 @@ class FirstFragment : Fragment() {
                         Log.d(TAG, "token absent")
                         binding.search.isEnabled = false
                         binding.newSearch.isEnabled = false
+                        viewModel.getAcessToken()
                     }
                 }
 
@@ -95,6 +93,11 @@ class FirstFragment : Fragment() {
                 Log.d(TAG,"got updated albums: size: ${albums.size}")
                 albumsAdapter.updateAlbums(albums)
                 albumsAdapter.notifyDataSetChanged()
+            }.launchIn(this)
+
+            viewModel.searchQuery.onEach { query ->
+                Log.d(TAG,"got search query")
+                binding.queryinputtext.setText(query)
             }.launchIn(this)
         }
     }

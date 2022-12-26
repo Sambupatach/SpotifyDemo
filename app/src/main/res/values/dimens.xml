@@ -5,5 +5,6 @@
     <dimen name="dp_10">10dp</dimen>
     <dimen name="dp_1">1dp</dimen>
     <dimen name="title_font">17sp</dimen>
+    <dimen name="splash_font">27sp</dimen>
     <dimen name="artist_font">14sp</dimen>
 </resources>
