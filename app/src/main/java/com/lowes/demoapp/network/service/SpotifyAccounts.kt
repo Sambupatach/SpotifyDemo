@@ -16,6 +16,7 @@ private const val TAG = "SpotifyAccounts"
 class SpotifyAccounts(var context : Context) {
     val SPOTIFY_WEB_ACCOUNTS_ENDPOINT = "https://accounts.spotify.com"
     val SPOTIFY_WEB_API_ENDPOINT = "https://api.spotify.com/v1/"
+    // TODO : rely on user cred than client cred
     val CLIENT_SECRET = "Basic NzZhNDk1NGJmNmM4NGE0NThlOTMzN2VhYTI5MjVlOTI6MzFlNDJhNGQ3Mjk1NDM1NmI1NzI3NjRmOWM3N2Y4NDg="
 
     private var accountService : SpotifyNetworkService? = null

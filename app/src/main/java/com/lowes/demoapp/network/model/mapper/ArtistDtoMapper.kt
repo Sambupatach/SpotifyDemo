@@ -4,6 +4,9 @@ import com.lowes.demoapp.domain.model.Artist
 import com.lowes.demoapp.network.model.ArtistDto
 import com.lowes.demoapp.util.ModelMapper
 
+/*
+ * Mapper to convert Dto Artist model to domain Artist model
+ */
 class ArtistDtoMapper: ModelMapper<ArtistDto, Artist> {
     override fun mapToDomainModel(model: ArtistDto): Artist {
         return Artist(

@@ -4,6 +4,9 @@ import com.lowes.demoapp.domain.model.Image
 import com.lowes.demoapp.network.model.ImageDto
 import com.lowes.demoapp.util.ModelMapper
 
+/*
+ * Mapper to convert Dto Image model to domain Image model
+ */
 class ImageDtoMapper: ModelMapper<ImageDto, Image> {
     override fun mapToDomainModel(model: ImageDto): Image {
         return Image(
