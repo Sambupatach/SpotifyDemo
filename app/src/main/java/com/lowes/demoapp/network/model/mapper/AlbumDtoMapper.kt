@@ -3,7 +3,9 @@ package com.lowes.demoapp.network.model.mapper
 import com.lowes.demoapp.domain.model.Album
 import com.lowes.demoapp.network.model.AlbumDto
 import com.lowes.demoapp.util.ModelMapper
-
+/*
+ * Mapper to convert Dto Album model to domain Album model
+ */
 class AlbumDtoMapper : ModelMapper<AlbumDto, Album> {
     var artistMapper = ArtistDtoMapper()
     var imageMapper = ImageDtoMapper()

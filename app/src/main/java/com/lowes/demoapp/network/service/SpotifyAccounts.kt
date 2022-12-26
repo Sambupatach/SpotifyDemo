@@ -16,6 +16,7 @@ private const val TAG = "SpotifyAccounts"
 class SpotifyAccounts(var context : Context) {
     val SPOTIFY_WEB_ACCOUNTS_ENDPOINT = "https://accounts.spotify.com"
     val SPOTIFY_WEB_API_ENDPOINT = "https://api.spotify.com/v1/"
+    // TODO : rely on user cred than client cred
     val CLIENT_SECRET = "Basic NzZhNDk1NGJmNmM4NGE0NThlOTMzN2VhYTI5MjVlOTI6MzFlNDJhNGQ3Mjk1NDM1NmI1NzI3NjRmOWM3N2Y4NDg="
 
     private var accountService : SpotifyNetworkService? = null
@@ -24,8 +25,10 @@ class SpotifyAccounts(var context : Context) {
         getLoggingClient(HttpLoggingInterceptor.Level.BODY)
     }
 
-
-    private fun getAccountService(callbackExecutor: Executor): SpotifyNetworkService? {
+    /*
+     * Spotify service for Account end point - doesn't need token interceptor
+     */
+    suspend private fun getAccountService(callbackExecutor: Executor): SpotifyNetworkService? {
         Log.d(TAG,"init AccountService")
         val retrofit: Retrofit = Retrofit.Builder()
             .client(loggingClient)
@@ -35,6 +38,10 @@ class SpotifyAccounts(var context : Context) {
             .build()
         return retrofit.create(SpotifyNetworkService::class.java)
     }
+
+    /*
+     * Spotify service for api end point - with token interceptor
+     */
     suspend private fun getApiService(accessToken : String, callbackExecutor: Executor): SpotifyNetworkService? {
         Log.d(TAG,"init ApiService")
 
@@ -72,7 +79,7 @@ class SpotifyAccounts(var context : Context) {
     }
 
 
-    suspend public fun getAccessToken(context : Context) : String?{
+    suspend fun getAccessToken(context : Context) : String?{
         var accessToken : String? = null
         try {
             accountService ?: getAccountService(context.mainExecutor)?.let { accountService = it }

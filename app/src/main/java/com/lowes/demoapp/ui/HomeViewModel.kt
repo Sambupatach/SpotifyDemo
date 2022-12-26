@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.lowes.demoapp.domain.model.Album
+import com.lowes.demoapp.network.service.SpotifyAccounts
 import com.lowes.demoapp.usecases.DoSearchAlbumsUseCase
 import com.lowes.demoapp.usecases.GetAccessTokenUseCase
 import com.lowes.demoapp.usecases.GetNewReleasesUseCase
@@ -14,9 +15,10 @@ import kotlinx.coroutines.launch
 
 private const val TAG = "HomeViewModel"
 class HomeViewModel(var app: Application) : AndroidViewModel(app) {
-    private var getAccessTokenUseCase = GetAccessTokenUseCase()
-    private var getNewReleasesUseCase = GetNewReleasesUseCase()
-    private var doSearchUseCase = DoSearchAlbumsUseCase()
+    private var spotifyAccountService = SpotifyAccounts(app.applicationContext)
+    private var getAccessTokenUseCase = GetAccessTokenUseCase(spotifyAccountService)
+    private var getNewReleasesUseCase = GetNewReleasesUseCase(spotifyAccountService)
+    private var doSearchUseCase = DoSearchAlbumsUseCase(spotifyAccountService)
 
     private val _accessTokenInitialized = MutableStateFlow<Boolean>(false)
     val accessTokenInitialized: Flow<Boolean> = _accessTokenInitialized
