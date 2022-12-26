@@ -2,5 +2,8 @@
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="div_height">1dp</dimen>
     <dimen name="dp_3">3dp</dimen>
+    <dimen name="dp_10">10dp</dimen>
     <dimen name="dp_1">1dp</dimen>
+    <dimen name="title_font">17sp</dimen>
+    <dimen name="artist_font">14sp</dimen>
 </resources>

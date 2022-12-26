@@ -17,8 +17,8 @@
 
         <ImageView
             android:id="@+id/album_image"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -31,7 +31,7 @@
         <LinearLayout
             android:id="@+id/details"
             android:layout_width="wrap_content"
-            android:layout_height="30dp"
+            android:layout_height="wrap_content"
             android:layout_margin="@dimen/dp_3"
             app:layout_constraintLeft_toRightOf="@+id/album_image"
             app:layout_constraintRight_toRightOf="parent"
@@ -42,19 +42,23 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/dp_1"
                 android:id="@+id/title"
-                android:text="The Title of a Blog"
-                android:textColor="#000"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="@string/ex_title"
+                android:textColor="@color/black"
                 android:textStyle="bold"
-                android:textSize="9sp"
+                android:textSize="@dimen/title_font"
                 />
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/dp_1"
                 android:id="@+id/artists"
-                android:text="The Title of a Blog dsdsfsdfsdfdsds"
-                android:textColor="#000"
-                android:textSize="9sp"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="@string/ex_artists"
+                android:textColor="@color/black"
+                android:textSize="@dimen/artist_font"
                 />
         </LinearLayout>
     </LinearLayout>

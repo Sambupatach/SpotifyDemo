@@ -29,7 +29,7 @@ class AlbumsRecyclerAdapter(var albums : List<Album>) :
         (holder as AlbumViewHolder).title.text = album.name
         (holder as AlbumViewHolder).artists.text = getArtistsNames(album.artists)
         val requestOptions = RequestOptions
-            .overrideOf(640, 640)
+            .overrideOf(200, 200)
         Glide.with(holder.itemView.context)
             .applyDefaultRequestOptions(requestOptions)
             .load(album!!.images!!.get(0).url)
@@ -47,7 +47,9 @@ class AlbumsRecyclerAdapter(var albums : List<Album>) :
     private fun getArtistsNames(artists : List<Artist>?) : String{
         Log.d(TAG,"getArtistsNames")
         var ret = ""
-        artists?.forEach { ret += it.name+" " }
+        artists?.forEach { ret += it.name+", " }
+        Log.d(TAG,"ret:$ret")
+        if(!ret.isEmpty()) ret = ret.dropLast(2)
         return ret
     }
     inner class AlbumViewHolder (var view : View) :RecyclerView.ViewHolder(view) {
