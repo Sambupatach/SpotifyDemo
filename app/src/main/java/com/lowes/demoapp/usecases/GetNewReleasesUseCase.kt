@@ -9,7 +9,7 @@ private const val TAG = "GetNewReleasesUseCase"
 class GetNewReleasesUseCase {
 
     suspend operator fun invoke(application : Application, token : String) : List<Album>? {
-        Log.d(TAG,"getToken")
+        Log.d(TAG,"invoke getNewReleases")
         var spotifyAccountService = SpotifyAccounts(application.applicationContext)
         return spotifyAccountService.getNewReleases(token, application.applicationContext)
     }

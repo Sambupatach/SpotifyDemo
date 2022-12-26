@@ -3,12 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
+    android:label="@string/search_albums"
     app:startDestination="@id/FirstFragment">
 
     <fragment
         android:id="@+id/FirstFragment"
         android:name="com.lowes.demoapp.ui.FirstFragment"
-        android:label="@string/first_fragment_label"
+        android:label="@string/search_albums"
         tools:layout="@layout/fragment_first">
 
         <action
