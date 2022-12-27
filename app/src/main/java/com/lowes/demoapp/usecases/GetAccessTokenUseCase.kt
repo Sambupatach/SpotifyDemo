@@ -6,9 +6,9 @@ import com.lowes.demoapp.network.service.SpotifyAccounts
 
 
 private const val TAG = "GetAccessTokenUseCase"
-class GetAccessTokenUseCase (var spotifyAccountService : SpotifyAccounts){
+open class GetAccessTokenUseCase (var spotifyAccountService : SpotifyAccounts){
 
-    suspend operator fun invoke(application : Application) : String?{
+    open suspend operator fun invoke(application : Application) : String?{
         Log.d(TAG,"getToken")
         return spotifyAccountService.getAccessToken(application.applicationContext)
     }
