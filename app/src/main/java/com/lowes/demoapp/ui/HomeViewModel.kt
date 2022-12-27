@@ -2,6 +2,7 @@ package com.lowes.demoapp.ui
 
 import android.app.Application
 import android.util.Log
+import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.lowes.demoapp.domain.model.Album
@@ -16,9 +17,12 @@ import kotlinx.coroutines.launch
 private const val TAG = "HomeViewModel"
 class HomeViewModel(var app: Application) : AndroidViewModel(app) {
     private var spotifyAccountService = SpotifyAccounts(app.applicationContext)
-    private var getAccessTokenUseCase = GetAccessTokenUseCase(spotifyAccountService)
-    private var getNewReleasesUseCase = GetNewReleasesUseCase(spotifyAccountService)
-    private var doSearchUseCase = DoSearchAlbumsUseCase(spotifyAccountService)
+    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+    var getAccessTokenUseCase = GetAccessTokenUseCase(spotifyAccountService)
+    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+    var getNewReleasesUseCase = GetNewReleasesUseCase(spotifyAccountService)
+    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+    var doSearchUseCase = DoSearchAlbumsUseCase(spotifyAccountService)
 
     private val _accessTokenInitialized = MutableStateFlow<Boolean>(false)
     val accessTokenInitialized: Flow<Boolean> = _accessTokenInitialized
@@ -29,16 +33,17 @@ class HomeViewModel(var app: Application) : AndroidViewModel(app) {
     private val _searchQuery = MutableStateFlow<String>("")
     val searchQuery : Flow<String> = _searchQuery
 
-    private var accessToken : String? = null
+    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+    var accessToken : String? = null
     init {
         Log.d(TAG,"init()")
     }
     public fun getAcessToken(){
         Log.d(TAG,"getAcessToken")
         viewModelScope.launch {
-            accessToken ?: getAccessTokenUseCase(app).let { accessToken = it }
+            accessToken ?: getAccessTokenUseCase(app)?.let { accessToken = it }
             Log.d(TAG,"got token:$accessToken")
-            _accessTokenInitialized.value = ((if(accessToken != null) true else false))
+            _accessTokenInitialized.value = ((accessToken != null && accessToken?.isNotEmpty() == true))
         }
     }
 

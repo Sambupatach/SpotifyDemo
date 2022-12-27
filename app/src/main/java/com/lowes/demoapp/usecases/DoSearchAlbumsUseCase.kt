@@ -6,10 +6,10 @@ import com.lowes.demoapp.domain.model.Album
 import com.lowes.demoapp.network.service.SpotifyAccounts
 
 private const val TAG = "DoSearchAlbumsUseCase"
-class DoSearchAlbumsUseCase(var spotifyAccountService : SpotifyAccounts) {
-    suspend operator fun invoke(application : Application, token : String, query : String) : List<Album>? {
+open class DoSearchAlbumsUseCase(var spotifyAccountService : SpotifyAccounts) {
+    open suspend operator fun invoke(application : Application, token : CharSequence, query : CharSequence) : List<Album>? {
         Log.d(TAG,"invoke doSearch")
 
-        return spotifyAccountService.doSearch(query, token, application.applicationContext)
+        return spotifyAccountService.doSearch(query as String, token as String, application.applicationContext)
     }
 }
